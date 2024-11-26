@@ -30,7 +30,7 @@ def sauvegarder():
     donnees["dés"] = liste  # Met à jour la clé "dés"
     with open(fichier, 'w', encoding='utf-8') as f:
         json.dump(donnees, f, ensure_ascii=False, indent=4)
-    print("Les modifications ont été sauvegardées.")
+    print("Vos modifications ont été sauvegardées.")
 
 def lancement_dés():
     global a  
@@ -44,19 +44,24 @@ def lancement_dés():
 def visu_dés():
     global a  
     for loop in range(len(liste)):
-        print("le dé N°",a,"a ",liste[a]," faces ")
+        print("le dé N°",a,"a",liste[a]," faces ")
         a += 1
     a = 0  
     time.sleep(2.5)
 
 def ajouter_dés():
     nb_faces=int(input("veuillez choisir le nombre de faces de votre dés: "))
-    liste.append(nb_faces)
-    sauvegarder()
-    time.sleep(1.5)
-
+    if (nb_faces>0): #le 1 est accpecté car pourquoi pas ?
+        liste.append(nb_faces)
+        sauvegarder()
+        time.sleep(1.5)
+    else:
+        print("veuillez entre un nombre supérieur à 0")
+        time.sleep(1.5)
+        ajouter_dés()
 
 def supprimer_dés():
+    visu_dés()
     nb_faces=int(input("veuillez choisir le nombre de faces de votre dés: "))
     liste.remove(nb_faces)
     sauvegarder()
