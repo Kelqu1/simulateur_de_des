@@ -5,11 +5,32 @@
 
 import random as nombre
 import time
+import json
 
-liste = [6]
+liste = []
 a = 0
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~zone création d'un JSON~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+fichier = "mes_des.json"
+
+# Lecture du fichier JSON ou initialisation si vide
+try:
+    with open(fichier, 'r', encoding='utf-8') as f:
+        donnees = json.load(f)
+        liste = donnees.get("dés", [])  # Charger la liste des tâches
+except FileNotFoundError:
+    # Si le fichier n'existe pas, on initialise une structure par défaut
+    donnees = {"dés": [6]}
+    liste = donnees["dés"]
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~zone des definitions des fonctions~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+def sauvegarder():
+    """Sauvegarde les tâches dans le fichier JSON."""
+    donnees["dés"] = liste  # Met à jour la clé "dés"
+    with open(fichier, 'w', encoding='utf-8') as f:
+        json.dump(donnees, f, ensure_ascii=False, indent=4)
+    print("Les modifications ont été sauvegardées.")
 
 def lancement_dés():
     global a  
@@ -31,12 +52,14 @@ def visu_dés():
 def ajouter_dés():
     nb_faces=int(input("veuillez choisir le nombre de faces de votre dés: "))
     liste.append(nb_faces)
+    sauvegarder()
     time.sleep(1.5)
 
 
 def supprimer_dés():
     nb_faces=int(input("veuillez choisir le nombre de faces de votre dés: "))
     liste.remove(nb_faces)
+    sauvegarder()
     time.sleep(1.5)
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~le Main~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
