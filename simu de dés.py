@@ -1,4 +1,3 @@
-
 #lanceur de dés
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Zone des déclarations~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -8,8 +7,10 @@ import time
 import json
 
 liste = []
-a = 0
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~zone création d'un JSON~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+"""
+    Attention ici tu ne crée aucun fichier mais tu ne fais que le lire donc le nom de la zone est incorrecte
+"""
 
 fichier = "mes_des.json"
 
@@ -33,39 +34,52 @@ def sauvegarder():
     print("Vos modifications ont été sauvegardées.")
 
 def lancement_dés():
-    global a  
     for loop in range(len(liste)):
-        résultat = nombre.randint(1, liste[a])
-        print(f"Le dé à {liste[a]} faces est tombé sur le {résultat}.")
-        a += 1
-    a = 0  
+        résultat = nombre.randint(1, liste[loop])
+        print(f"Le dé à {liste[loop]} faces est tombé sur le {résultat}.")
     time.sleep(2.5)
 
 def visu_dés():
-    global a  
     for loop in range(len(liste)):
-        print("le dé N°",a,"a",liste[a]," faces ")
-        a += 1
-    a = 0  
+        print("le dé N°",loop+1,"a",liste[loop]," faces")
     time.sleep(2.5)
 
 def ajouter_dés():
-    nb_faces=int(input("veuillez choisir le nombre de faces de votre dés: "))
-    if (nb_faces>0): #le 1 est accpecté car pourquoi pas ?
-        liste.append(nb_faces)
-        sauvegarder()
-        time.sleep(1.5)
-    else:
-        print("veuillez entre un nombre supérieur à 0")
+    try:
+        nb_faces=int(input("Veuillez choisir le nombre de faces de votre dé :\n"))
+        if (nb_faces>0): #le 1 est accpecté car pourquoi pas ?
+            liste.append(nb_faces)
+            sauvegarder()
+            time.sleep(1.5)
+        else:
+            print("veuillez entre un nombre supérieur à 0")
+            time.sleep(1.5)
+            ajouter_dés()
+    except ValueError:
+        print("Valeur entré invalide")
         time.sleep(1.5)
         ajouter_dés()
 
 def supprimer_dés():
     visu_dés()
-    nb_faces=int(input("veuillez choisir le nombre de faces de votre dés: "))
-    liste.remove(nb_faces)
-    sauvegarder()
-    time.sleep(1.5)
+    try:
+        nb_faces=int(input("veuillez choisir le numéro de votre dés a supprimer: \n")) #on demande le numéro du dé a supprimer c'est plus simple que le nombre de face car sinon ca va pas supprimer le bon et c'est plus simple a comprendre
+        liste.pop(nb_faces-1)
+        sauvegarder()
+        time.sleep(1.5)
+    except ValueError:
+        print("Valeur entrée invalide ou aucun dé trouvé. Veuillez entrer l'index du dé.")
+        time.sleep(1.5)
+        while True:
+            try:
+                nb_faces = int(input("veuillez choisir le nombre de faces de votre dés: \n"))
+                liste.remove(nb_faces)
+                sauvegarder()
+                time.sleep(1.5)
+                break
+            except ValueError:
+                print("Valeur entré invalide ou aucun dé trouvé")
+                time.sleep(1.5)
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~le Main~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -81,23 +95,29 @@ while True:
     print("| tapper: 4 supprimer un dés            |")
     print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
-    choix=int(input("tapper 0, 1, 2 ou 3 selon votre choix "))
+    try : 
+        choix=int(input("tapper 0, 1, 2 ou 3 selon votre choix :\n"))
 
-    if choix==0:
-        print("arret du programme")
-        exit()
-    elif choix==1:
-        print("vous avez choisi de lancer vos dés")
-        lancement_dés()
-    elif choix==2:
-        print("vous avez choisi de visualiser vos dés")
-        visu_dés()
-    elif choix==3:
-        print("vous avez choisi d'ajouter un dés")
-        ajouter_dés()
-    elif choix==4:
-        print("vous avez choisi de supprimer un dés")
-        supprimer_dés()
-    else:
-        print("veuillez tapper UNIQUEMENT 0, 1, 2, 3 ou 4 selon votre choix ")
+        match choix: #remplace les if et elif par un match pour plus de lisibilité et une meilleur rapidité
+            case 0 :
+                print("arret du programme")
+                exit()
+            case 1 :
+                print("vous avez choisi de lancer vos dés")
+                lancement_dés()
+            case 2 :
+                print("vous avez choisi de visualiser vos dés")
+                visu_dés()
+            case 3 :
+                print("vous avez choisi d'ajouter un dés")
+                ajouter_dés()
+            case 4 :
+                print("vous avez choisi de supprimer un dés")
+                supprimer_dés()
+            case _ : #si le choix n'est pas dans les choix proposé
+                print("veuillez tapper UNIQUEMENT 0, 1, 2, 3 ou 4 selon votre choix :\n")
+                time.sleep(2)
+
+    except ValueError:
+        print("veuillez tapper UNIQUEMENT 0, 1, 2, 3 ou 4 selon votre choix :\n")
         time.sleep(2)
