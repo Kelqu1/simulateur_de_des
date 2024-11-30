@@ -5,14 +5,14 @@
 import random as nombre
 import time
 import json
+import os
 
 liste = []
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~zone création d'un JSON~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-"""
-    Attention ici tu ne crée aucun fichier mais tu ne fais que le lire donc le nom de la zone est incorrecte
-"""
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~zone gestion JSON~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-fichier = "mes_des.json"
+# Définir le chemin du fichier .json dans le répertoire du projet
+repertoire_du_projet = os.path.dirname(os.path.abspath(__file__))
+fichier = os.path.join(repertoire_du_projet, "mes_des.json")
 
 # Lecture du fichier JSON ou initialisation si vide
 try:
